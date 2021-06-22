@@ -2,9 +2,11 @@ const skt = io();
 let pte = document.querySelector("pink-trombone");
 let ctx, mgain;
 let aon = false;
+
 pte.addEventListener("load", pteload);
 
 function pteload(evt) {
+    document.addEventListener("click", () => {
     if(!ctx) {
         try {
             window.AudioContext = 
@@ -15,7 +17,8 @@ function pteload(evt) {
             mgain.connect(ctx.destination);
             aon = true;
             pte.setAudioContext(ctx)
-            .then(() => {
+                .then(() => {
+                pte.enableUI();
                 pte.connect(mgain);
                 pte.start();
             });
@@ -24,6 +27,8 @@ function pteload(evt) {
             alert("blup");
         };
     }
+})
+    
 };
 
 skt.on("vol", (arg1) => {
@@ -71,6 +76,7 @@ skt.on("vib", (freq, gain, wobble) => {
 });
 
 skt.on("tongueidx", (arg1) => {
+    console.log(pte.tongue)
     pte.tongue.index.value = arg1;
 });
 

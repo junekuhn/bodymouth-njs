@@ -7,12 +7,13 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const sport = 8000;
 const osc = require('node-osc');
-const oscserv = new osc.Server(oscin, '0.0.0.0');
+const oscserv = new osc.Server(oscin, '127.0.0.1');
 const oscclient = new osc.Client('127.0.0.1', oscout);
 
 let clients = {};
 
 oscserv.on("message", (msg, rinfo) => {
+    console.log(msg);
         switch(msg[0]) {
             case "/vol":  
                 io.emit("vol", msg[1]);
@@ -53,13 +54,58 @@ oscserv.on("message", (msg, rinfo) => {
             case "/voiceness":  
                 io.emit("voiceness", msg[1]);
                 break;
+            case "/pat":
+                io.emit("tonguediam", 2.78 );
+                io.emit("tongueidx", 14.93);
+                break;
+            case "/pet":
+                io.emit("tonguediam", 3.43);
+                io.emit("tongueidx", 19.4);
+                break;
+            case "/port":
+                io.emit("tonguediam", 2.05);
+                io.emit("tongueidx", 17.7);
+                break;
+            case "/pit":
+                io.emit("tonguediam", 2.87);
+                io.emit("tongueidx", 26.1);
+                break;
+            case "/part":
+                io.emit("tonguediam", 2.3);
+                io.emit("tongueidx", 12.75);
+                break;
+            case "/pot":
+                io.emit("tonguediam", 2.05);
+                io.emit("tongueidx", 12);
+                break;
+            case "/peat":
+                io.emit("tonguediam", 2.2);
+                io.emit("tongueidx", 27.2);
+                break;
+            case "/put":
+                io.emit("tonguediam", 2.46);
+                io.emit("tongueidx", 17.8);
+                break;
+            case "/poot":
+                io.emit("tonguediam", 2.05);
+                io.emit("tongueidx", 22.8);
+                break;
+            case "/pert":
+                io.emit("tonguediam", 2.8);
+                io.emit("tongueidx", 20.7);
+                break;
+
             default:
                 break;
         };
 });
 
-server.listen(sport, () => {});
-app.use("/", express.static(__dirname + '/public'));
+server.listen(sport, () => {
+    console.log(`Success! Your application is running on port ${sport}.`)
+});
+// 
+
+app.use('/', express.static(__dirname + '/public'));
 
 io.on('connection', (skt) => {
     clients[skt.id] = skt;

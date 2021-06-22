@@ -1,0 +1,25 @@
+let target = Target {oName = "ascii",
+                     oAddress = "127.0.0.1",
+                     oPort = 33333,
+                     oLatency = 0.2,
+                     oWindow = Nothing,
+                     oSchedule = Live,
+                     oHandshake = False,
+                     oBusPort = Nothing
+                    }
+    formats = [OSC "/vol"  $ ArgList [("vol", Nothing)],
+               -- OSC "/{asccolour}/mode"   $ ArgList [("ascmode", Nothing)],
+               -- OSC "/{asccolour}/offset" $ ArgList [("ascoffset", Nothing)],
+               -- OSC "/{asccolour}/scale"  $ ArgList [("ascscale", Nothing)],
+               -- OSC "/shape/sides" $ ArgList [("ascsides", Nothing)],
+               -- OSC "/shape/size"  $ ArgList [("ascsize", Nothing)],
+               -- OSC "/shape/xinc"  $ ArgList [("ascxinc", Nothing)],
+               OSC "/freq"  $ ArgList [("freq", Nothing)]
+              ]
+    freq = pF "freq"
+    vol = pF "vol"
+    oscmap = [(target, formats)]
+
+stream <- startStream defaultConfig oscmap
+
+streamReplace stream 1 $ vol "0.5 0.9" + freq "330 440 990 220"
